@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu Mori Duniya 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    color:white;
+    background:linear-gradient(-45deg,#ff6a88,#ff99ac,#ffd1dc,#ff85a2);
+    background-size:400% 400%;
+    animation:gradient 12s ease infinite;
+}
+@keyframes gradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Floating hearts */
+.heart{
+    position:fixed;
+    bottom:-30px;
+    animation:floatUp linear infinite;
+    pointer-events:none;
+}
+@keyframes floatUp{
+    to{transform:translateY(-120vh) scale(1.6);opacity:0;}
+}
+
+/* Sections */
+.section{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px 20px;
+    text-align:center;
+}
+
+.card{
+    max-width:500px;
+    width:100%;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(25px);
+    padding:35px 25px;
+    border-radius:30px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.4);
+}
+
+/* MAIN IMAGE */
+.main-image{
+    width:100%;
+    max-height:300px;
+    object-fit:cover;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* Text */
+h1{
+    margin-top:20px;
+    font-family:'Playfair Display',serif;
+    font-size:34px;
+}
+p{
+    margin-top:15px;
+    line-height:1.7;
+}
+
+/* Buttons */
+.btn{
+    margin-top:25px;
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:50px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* IMAGE-FILLED BUTTON */
+.image-btn{
+    background:url('image.jpeg') center/cover no-repeat;
+    color:white;
+    position:relative;
+    overflow:hidden;
+}
+
+/* dark overlay */
+.image-btn::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+}
+
+/* text above image */
+.image-btn span{
+    position:relative;
+    z-index:2;
+    font-size:16px;
+}
+
+.image-btn:hover{
+    transform:scale(1.05);
+}
+
+/* Popup */
+.popup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:10;
+}
+
+.popup-box{
+    background:white;
+    color:#ff4f8b;
+    padding:35px 25px;
+    border-radius:25px;
+    text-align:center;
+}
+
+#noBtn{position:relative;}
+
+/* Heart explosion */
+.explode{
+    position:fixed;
+    font-size:22px;
+    animation:explode 1s forwards ease;
+}
+@keyframes explode{
+    to{
+        transform:translate(var(--x),var(--y)) scale(2);
+        opacity:0;
+    }
+}
+
+footer{
+    text-align:center;
+    padding:15px;
+    font-size:13px;
+}
+</style>
+</head>
+<body>
+
+<!-- MUSIC -->
+<audio id="music" autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- SECTION 1 -->
+<div class="section">
+    <div class="card">
+
+        <!-- ONLY YOUR IMAGE -->
+        <img src="image.jpg" alt="Our Love" class="main-image">
+
+        <h1>My Love 💖</h1>
+
+        <!-- IMAGE-FILLED BUTTON -->
+        <button class="btn image-btn" onclick="scrollToMessage()">
+            <span>Next ❤️</span>
+        </button>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section" id="message">
+    <div class="card">
+        <h1>From My Heart ❤️</h1>
+        <p>
+            The day you came into my life,  
+            everything became brighter and more meaningful.  
+            Your smile is my peace,  
+            your love is my home.  
+            I choose you today, tomorrow, and always 💍
+        </p>
+        <button class="btn" style="background:white;color:#ff4f8b;" onclick="openValentine()">Continue 💌</button>
+    </div>
+</div>
+
+<!-- Valentine Popup -->
+<div class="popup" id="valentinePopup">
+    <div class="popup-box">
+        <h2>Will You Be My Valentine? 💖</h2>
+        <div style="display:flex;gap:15px;justify-content:center;margin-top:20px;">
+            <button class="btn" style="background:#ff4f8b;color:white;" onclick="yesValentine()">Yes 💍</button>
+            <button class="btn" id="noBtn" style="background:#ddd;">No 😜</button>
+        </div>
+    </div>
+</div>
+
+<!-- Final Popup -->
+<div class="popup" id="finalPopup">
+    <div class="popup-box">
+        <h2>You Said YES! ❤️</h2>
+        <p>
+            You are my forever,  
+            my happiness, my love 💕  
+            I promise to love you endlessly 💖
+        </p>
+        <button class="btn" style="background:#ff4f8b;color:white;" onclick="closeFinal()">Close</button>
+    </div>
+</div>
+
+<footer>Made with ❤️ Only for You</footer>
+
+<script>
+// autoplay fallback
+window.addEventListener("click",()=>{
+    document.getElementById("music").play();
+},{once:true});
+
+// scroll
+function scrollToMessage(){
+    document.getElementById("message").scrollIntoView({behavior:"smooth"});
+}
+
+// floating hearts
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💖";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=Math.random()*20+14+"px";
+    h.style.animationDuration=Math.random()*3+4+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),7000);
+},300);
+
+// popup
+function openValentine(){
+    document.getElementById("valentinePopup").style.display="flex";
+}
+
+// no button escape
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+});
+
+// yes
+function yesValentine(){
+    document.getElementById("valentinePopup").style.display="none";
+    document.getElementById("finalPopup").style.display="flex";
+    explodeHearts();
+}
+
+function closeFinal(){
+    document.getElementById("finalPopup").style.display="none";
+}
+
+// explosion
+function explodeHearts(){
+    for(let i=0;i<30;i++){
+        const e=document.createElement("div");
+        e.className="explode";
+        e.innerHTML="💖";
+        e.style.left="50%";
+        e.style.top="50%";
+        e.style.setProperty('--x',Math.random()*400-200+'px');
+        e.style.setProperty('--y',Math.random()*400-200+'px');
+        document.body.appendChild(e);
+        setTimeout(()=>e.remove(),1000);
+    }
+}
+</script>
+
+</body>
+</html>
